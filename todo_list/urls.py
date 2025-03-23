@@ -1,6 +1,7 @@
-from django.contrib import admin
 from django.urls import path
 
+from todo_list.views import TagListView
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('',TagListView.as_view(),name='tag-list'),
 ]
