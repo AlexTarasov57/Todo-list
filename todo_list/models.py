@@ -3,11 +3,11 @@ from django.db import models
 
 
 class Tag(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=255)
 
 
 class Task(models.Model):
-    content = models.TextField()
+    content = models.CharField(max_length=255)
     datetime_cr = models.DateTimeField(auto_now_add=True)
     deadline = models.DateTimeField()
     done = models.BooleanField(default=False)
