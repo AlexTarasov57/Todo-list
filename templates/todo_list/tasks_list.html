@@ -1,0 +1,38 @@
+{%  extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1>Todo list</h1>
+    <a href="{% url 'todo_list:task-create' %}" class="btn btn-primary">
+      Add task
+    </a>
+  </div>
+
+  {% if tasks_list %}
+      {% for task in tasks_list %}
+        <div>
+          <h5><b>{{ task.content }} {% if task.done %} <span style="color: green;">done</span> {% else %} <span style="color: red;"> Not done</span>{% endif %}</b></h5>
+          <div>
+            <h6>Created:{{ task.datetime_cr }} 
+            {% if task.deadline %}
+              <span style="color: darkred;">
+                Deadline: {{ task.deadline }} </span>{% endif %}</h6>
+          </div>
+            <h5>Tags:{% for tag in task.tags.all %} {{ tag.name }}
+        {% endfor %}
+        <a style="color: red"
+                href="{% url 'todo_list:task-delete' pk=task.id %}">
+                Delete
+        </a>
+        <a href="{% url 'todo_list:task-update' pk=task.id %}">
+                Update
+        </a></h5> 
+        </div>
+        <hr>
+        <br>
+      {% endfor %}
+
+  {% else %}
+      <p>No task available.</p>
+  {% endif %}
+{% endblock %}
