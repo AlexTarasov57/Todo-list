@@ -6,6 +6,17 @@ from django.views import generic
 from todo_list.models import Tag, Task
 
 
+
+
+from django.shortcuts import redirect, get_object_or_404
+from .models import Task
+
+def toggle_task(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.done = not task.done
+    task.save()
+    return redirect('todo_list:task_list')
+
 class TagListView(generic.ListView):
     model = Tag
     context_object_name = "tags_list"
