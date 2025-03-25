@@ -9,6 +9,8 @@ from todo_list.models import Tag, Task
 
 
 from django.shortcuts import redirect, get_object_or_404
+
+from .forms import TaskForm
 from .models import Task
 
 def toggle_task(request, pk):
@@ -48,16 +50,25 @@ class TaskListView(generic.ListView):
     template_name = "todo_list/tasks_list.html"
     paginate_by = 5
 
+    def get_queryset(self):
+        sort_done = self.request.GET.get('sort', 'all')
+
+        if sort_done == "done":
+            return Task.objects.filter(done=True).order_by('-datetime_cr')
+        elif sort_done == "not_done":
+            return Task.objects.filter(done=False).order_by('-datetime_cr')
+        return Task.objects.all().order_by('done', '-datetime_cr')
+
 
 class TasksCreateView(generic.CreateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskForm
     success_url = reverse_lazy("todo_list:task_list")
 
 
 class TasksUpdateView(generic.UpdateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskForm
     success_url = reverse_lazy("todo_list:task_list")
 
 
